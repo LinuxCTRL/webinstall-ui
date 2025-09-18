@@ -5,6 +5,8 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import { Header } from "@/components/Header";
 const Operator = localFont({
   src: "./../../public/fonts/OperatorMonoLig-Book.otf",
@@ -106,6 +108,7 @@ export default function RootLayout({
         >
           <Header />
           {children}
+          <SpeedInsights />
           <Footer />
           <Toaster />
           <Analytics />
