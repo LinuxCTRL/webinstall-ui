@@ -3,15 +3,16 @@ import type {
   GitHubFileContent,
   GitHubTreeItem,
 } from "@/types";
+import { fileCache, treeCache, getCached } from "./cache";
 
 const GITHUB_API_BASE = "https://api.github.com";
 const WEBI_REPO_OWNER = "webinstall";
 const WEBI_REPO_NAME = "webi-installers";
 
-// GitHub API client with rate limiting considerations
+// GitHub API client with rate limiting and caching
 class GitHubApiClient {
   private baseUrl = GITHUB_API_BASE;
-  private headers: HeadersInit;
+  private headers: Record<string, string>;
 
   constructor() {
     this.headers = {
@@ -20,40 +21,63 @@ class GitHubApiClient {
     };
 
     // Add GitHub token if available (for higher rate limits)
-    if (process.env.GITHUB_TOKEN) {
-      this.headers.Authorization = `token ${process.env.GITHUB_TOKEN}`;
+    const token =
+      process.env.NEXT_PUBLIC_GITHUB_TOKEN || process.env.GITHUB_TOKEN;
+    if (token) {
+      this.headers.Authorization = `Bearer ${token}`;
     }
   }
 
-  private async makeRequest<T>(endpoint: string): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
+  private async fetchFromGitHub<T extends Record<string, any>>(
+    url: string,
+    useLongCache = false,
+  ): Promise<T> {
+    const response = await fetch(url, {
+      headers: this.headers,
+      next: {
+        // Cache in Next.js cache
+        revalidate: useLongCache ? 86400 : 300, // 24 hours or 5 minutes
+      },
+    });
 
-    try {
-      const response = await fetch(url, {
-        headers: this.headers,
-        next: {
-          // Cache for 5 minutes in production, always fresh in development
-          revalidate: process.env.NODE_ENV === "development" ? 0 : 300,
-        },
-      });
+    if (!response.ok) {
+      if (response.status === 403) {
+        const rateLimitReset = response.headers.get("x-ratelimit-reset");
+        const remaining = response.headers.get("x-ratelimit-remaining");
+        const limit = response.headers.get("x-ratelimit-limit");
+        const resetDate = rateLimitReset
+          ? new Date(parseInt(rateLimitReset) * 1000).toLocaleString()
+          : "unknown";
 
-      if (!response.ok) {
-        if (response.status === 403) {
-          const rateLimitReset = response.headers.get("x-ratelimit-reset");
-          throw new Error(
-            `GitHub API rate limit exceeded. Reset at: ${rateLimitReset}`,
-          );
-        }
         throw new Error(
-          `GitHub API error: ${response.status} ${response.statusText}`,
+          `GitHub API rate limit exceeded.\nLimit: ${limit}\nRemaining: ${remaining}\nReset at: ${resetDate}\n` +
+            (this.headers.Authorization
+              ? "Rate limit applies to your token."
+              : "No authentication token found. Authenticate to increase rate limit."),
         );
       }
-
-      return response.json();
-    } catch (error) {
-      console.error(`Failed to fetch ${url}:`, error);
-      throw error;
+      throw new Error(
+        `GitHub API error: ${response.status} ${response.statusText}`,
+      );
     }
+
+    return response.json();
+  }
+
+  private async makeRequest<T extends Record<string, any>>(
+    endpoint: string,
+    useLongCache = false,
+  ): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`;
+    const cache = (
+      useLongCache ? treeCache : fileCache
+    ) as import("lru-cache").LRUCache<string, T, unknown>;
+    const cacheKey = `github_${endpoint}`;
+
+    return getCached<T>(cache, cacheKey, async () => {
+      console.log(`Fetching from GitHub API: ${url}`);
+      return this.fetchFromGitHub<T>(url, useLongCache);
+    });
   }
 
   /**
@@ -62,6 +86,7 @@ class GitHubApiClient {
   async getRepositoryTree(): Promise<GitHubTreeResponse> {
     return this.makeRequest<GitHubTreeResponse>(
       `/repos/${WEBI_REPO_OWNER}/${WEBI_REPO_NAME}/git/trees/main?recursive=1`,
+      true, // Use long cache for repository tree
     );
   }
 
@@ -71,6 +96,7 @@ class GitHubApiClient {
   async getFileContent(path: string): Promise<GitHubFileContent> {
     return this.makeRequest<GitHubFileContent>(
       `/repos/${WEBI_REPO_OWNER}/${WEBI_REPO_NAME}/contents/${path}`,
+      true, // Use long cache for file contents
     );
   }
 
@@ -86,7 +112,10 @@ class GitHubApiClient {
    * Get repository information
    */
   async getRepositoryInfo() {
-    return this.makeRequest(`/repos/${WEBI_REPO_OWNER}/${WEBI_REPO_NAME}`);
+    return this.makeRequest<Record<string, string>>(
+      `/repos/${WEBI_REPO_OWNER}/${WEBI_REPO_NAME}`,
+      true,
+    );
   }
 }
 

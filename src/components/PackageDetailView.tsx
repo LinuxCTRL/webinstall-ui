@@ -39,7 +39,6 @@ import {
   Copy,
   CheckCircle2,
   Monitor,
-  Apple,
   Zap,
   Calendar,
   Tag,
@@ -557,22 +556,121 @@ function InstallationCommands({
 }) {
   return (
     <div className="space-y-6">
-      {/* Quick Install */}
+      {/* Quick Install with Webi */}
+      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5" />
+            Install with Webi (Recommended)
+          </CardTitle>
+          <CardDescription>
+            The fastest way to install {pkg.title} using Webi
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Linux/macOS Installation */}
+          {(pkg.platforms.linux || pkg.platforms.macos) && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <FaLinux className="h-4 w-4" />
+                <RiAppleLine className="h-4 w-4" />
+                <span className="text-sm font-medium">Linux / macOS</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <code className="flex-1 text-sm bg-muted p-3 rounded font-mono">
+                  curl -sS https://webi.sh/webi | sh; source
+                  ~/.config/envman/PATH.env
+                </code>
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    onCopyCommand(
+                      "curl -sS https://webi.sh/webi | sh; source ~/.config/envman/PATH.env",
+                      "webi-unix",
+                    )
+                  }
+                  className="shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
+                >
+                  {copied === "webi-unix" ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Windows Installation */}
+          {pkg.platforms.windows && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <ImWindows className="h-4 w-4" />
+                <span className="text-sm font-medium">Windows</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <code className="flex-1 text-sm bg-muted p-3 rounded font-mono">
+                  curl.exe https://webi.ms/webi | powershell
+                </code>
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    onCopyCommand(
+                      "curl.exe https://webi.ms/webi | powershell",
+                      "webi-win",
+                    )
+                  }
+                  className="shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
+                >
+                  {copied === "webi-win" ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Install Package using Webi */}
+          <Separator className="my-2" />
+          <div className="space-y-2">
+            <span className="text-sm font-medium">Install {pkg.title}</span>
+            <div className="flex items-center gap-3">
+              <code className="flex-1 text-sm bg-muted p-3 rounded font-mono">
+                webi {pkg.name}
+              </code>
+              <Button
+                variant="outline"
+                onClick={() => onCopyCommand(`webi ${pkg.name}`, "webi-pkg")}
+                className="shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
+              >
+                {copied === "webi-pkg" ? (
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Alternative Install Methods */}
       <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Terminal className="h-5 w-5" />
-            Quick Install
+            Alternative Install Methods
           </CardTitle>
           <CardDescription>
-            Copy and paste these commands to install {pkg.title}
+            Direct installation commands for {pkg.title}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {(pkg.platforms.linux || pkg.platforms.macos) && (
             <div className="space-y-3">
               <h4 className="font-medium">Linux / macOS</h4>
-
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <code className="flex-1 text-sm bg-muted p-3 rounded font-mono">
@@ -693,11 +791,111 @@ function InstallDialog({
       </DialogHeader>
 
       <div className="space-y-4">
-        {(pkg.platforms.linux || pkg.platforms.macos) && (
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm">Linux / macOS</h4>
+        {/* Webi Instructions */}
+        <div className="space-y-3">
+          <h4 className="font-medium text-sm flex items-center gap-2">
+            <Zap className="h-4 w-4" />
+            Using Webi (Recommended)
+          </h4>
 
+          {/* Linux/macOS Installation */}
+          {(pkg.platforms.linux || pkg.platforms.macos) && (
             <div className="space-y-2">
+              <div className="flex items-center gap-2 mb-2">
+                <FaLinux className="h-4 w-4" />
+                <RiAppleLine className="h-4 w-4" />
+                <span className="text-xs font-medium">Linux / macOS</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 text-sm bg-muted p-2 rounded font-mono break-all">
+                  curl -sS https://webi.sh/webi | sh; source
+                  ~/.config/envman/PATH.env
+                </code>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    onCopyCommand(
+                      "curl -sS https://webi.sh/webi | sh; source ~/.config/envman/PATH.env",
+                      "webi-unix",
+                    )
+                  }
+                >
+                  {copied === "webi-unix" ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Windows Installation */}
+          {pkg.platforms.windows && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 mb-2">
+                <ImWindows className="h-4 w-4" />
+                <span className="text-xs font-medium">Windows</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 text-sm bg-muted p-2 rounded font-mono break-all">
+                  curl.exe https://webi.ms/webi | powershell
+                </code>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    onCopyCommand(
+                      "curl.exe https://webi.ms/webi | powershell",
+                      "webi-win",
+                    )
+                  }
+                >
+                  {copied === "webi-win" ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Install Package */}
+          <div className="pt-2">
+            <div className="text-xs font-medium text-muted-foreground mb-2">
+              After installing Webi, run:
+            </div>
+            <div className="flex items-center gap-2">
+              <code className="flex-1 text-sm bg-muted p-2 rounded font-mono break-all">
+                webi {pkg.name}
+              </code>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onCopyCommand(`webi ${pkg.name}`, "webi-pkg")}
+              >
+                {copied === "webi-pkg" ? (
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* Alternative Methods */}
+        <div className="space-y-3">
+          <h4 className="font-medium text-sm">Alternative Methods</h4>
+          {(pkg.platforms.linux || pkg.platforms.macos) && (
+            <div className="space-y-2">
+              <h5 className="text-xs font-medium text-muted-foreground">
+                Linux / macOS
+              </h5>
               <div className="flex items-center gap-2">
                 <code className="flex-1 text-sm bg-muted p-2 rounded font-mono break-all">
                   {pkg.installCommand.curl}
@@ -714,17 +912,26 @@ function InstallDialog({
                   )}
                 </Button>
               </div>
+            </div>
+          )}
 
+          {pkg.platforms.windows && (
+            <div className="space-y-2">
+              <h5 className="text-xs font-medium text-muted-foreground">
+                Windows (PowerShell)
+              </h5>
               <div className="flex items-center gap-2">
                 <code className="flex-1 text-sm bg-muted p-2 rounded font-mono break-all">
-                  {pkg.installCommand.wget}
+                  {pkg.installCommand.powershell}
                 </code>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onCopyCommand(pkg.installCommand.wget, "wget")}
+                  onClick={() =>
+                    onCopyCommand(pkg.installCommand.powershell, "powershell")
+                  }
                 >
-                  {copied === "wget" ? (
+                  {copied === "powershell" ? (
                     <CheckCircle2 className="h-4 w-4 text-green-600" />
                   ) : (
                     <Copy className="h-4 w-4" />
@@ -732,32 +939,8 @@ function InstallDialog({
                 </Button>
               </div>
             </div>
-          </div>
-        )}
-
-        {pkg.platforms.windows && (
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm">Windows (PowerShell)</h4>
-            <div className="flex items-center gap-2">
-              <code className="flex-1 text-sm bg-muted p-2 rounded font-mono break-all">
-                {pkg.installCommand.powershell}
-              </code>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  onCopyCommand(pkg.installCommand.powershell, "powershell")
-                }
-              >
-                {copied === "powershell" ? (
-                  <CheckCircle2 className="h-4 w-4 text-green-600" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded">
           <p className="font-medium mb-1">Note:</p>

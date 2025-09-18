@@ -6,13 +6,10 @@ import {
   decodeBase64Content,
 } from "./github-api";
 import { parsePackage, isValidPackage } from "./package-parser";
+import { packageCache, getCached } from "./cache";
 
 export class WebiDataService {
   private static instance: WebiDataService;
-  private packagesCache: Package[] | null = null;
-  private lastFetchTime: number = 0;
-  private readonly CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
-  private fetchPromise: Promise<Package[]> | null = null;
 
   static getInstance(): WebiDataService {
     if (!WebiDataService.instance) {
@@ -25,35 +22,20 @@ export class WebiDataService {
    * Fetch all packages from the webi-installers repository
    */
   async getAllPackages(forceRefresh = false): Promise<Package[]> {
-    const now = Date.now();
+    const cacheKey = 'all_packages';
 
-    // Return cached data if available and not expired
-    if (
-      !forceRefresh &&
-      this.packagesCache &&
-      now - this.lastFetchTime < this.CACHE_DURATION
-    ) {
-      return this.packagesCache;
+    if (!forceRefresh) {
+      try {
+        return getCached(packageCache, cacheKey, () => this.performFetch());
+      } catch (error) {
+        console.error("Error fetching packages:", error);
+        throw error;
+      }
     }
 
-    // If a fetch is already in progress, return that promise
-    if (this.fetchPromise) {
-      return this.fetchPromise;
-    }
-
-    console.log("Fetching packages from GitHub API...");
-
-    // Create and store the fetch promise
-    this.fetchPromise = this.performFetch();
-
-    try {
-      const result = await this.fetchPromise;
-      return result;
-    } catch (error) {
-      throw error;
-    } finally {
-      this.fetchPromise = null;
-    }
+    // Force refresh - bypass cache
+    packageCache.delete(cacheKey);
+    return this.performFetch();
   }
 
   /**
@@ -100,20 +82,9 @@ export class WebiDataService {
         `Successfully fetched ${validPackages.length} valid packages`,
       );
 
-      // Update cache
-      this.packagesCache = validPackages;
-      this.lastFetchTime = Date.now();
-
       return validPackages;
     } catch (error) {
       console.error("Failed to fetch packages:", error);
-
-      // Return cached data if available, even if expired
-      if (this.packagesCache) {
-        console.log("Returning cached data due to fetch error");
-        return this.packagesCache;
-      }
-
       throw error;
     }
   }
@@ -241,8 +212,7 @@ export class WebiDataService {
    * Clear cache (useful for development or forced refresh)
    */
   clearCache(): void {
-    this.packagesCache = null;
-    this.lastFetchTime = 0;
+    packageCache.clear();
   }
 }
 

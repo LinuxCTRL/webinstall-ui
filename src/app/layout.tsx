@@ -7,7 +7,6 @@ import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
 import { Header } from "@/components/Header";
 import { getAllPackages } from "@/lib/data-service";
-
 const Operator = localFont({
   src: "./../../public/fonts/OperatorMonoLig-Book.otf",
 });

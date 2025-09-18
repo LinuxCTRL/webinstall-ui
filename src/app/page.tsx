@@ -40,7 +40,6 @@ export default async function Home() {
       getAllPackages(),
       getCategories(),
     ]);
-
     return (
       <HomeClient initialPackages={packages} initialCategories={categories} />
     );
