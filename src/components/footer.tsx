@@ -197,7 +197,15 @@ export default function Footer() {
                   className="h-4 w-4 text-red-500 animate-pulse"
                   fill="currentColor"
                 />{" "}
-                for developers by @LinuxCTRL
+                for developers by{" "}
+                <a
+                  href="https://github.com/LinuxCTRL/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1"
+                >
+                  @LinuxCTRL
+                </a>
               </div>
             </div>
 
