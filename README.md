@@ -1,5 +1,3 @@
-# AI Agent Prompt: Build Webi-Installers Next.js UI Project
-
 ## Project Overview
 I want to build a modern Next.js web application that serves as an improved UI/frontend for the webi-installers project (https://github.com/webinstall/webi-installers). The current website has poor UX, and I want to create a better interface for developers to discover and install development tools.
 
@@ -75,11 +73,11 @@ interface Package {
 
 ### Phase 2: Enhanced Features
 - [x] Package detail pages
-- [ ] Popular/trending packages
-- [ ] Recently updated packages
+- [x] Popular/trending packages
+- [x] Recently updated packages
 - [x] Dark/light theme toggle
-- [ ] Installation command customization
-- [ ] Package comparison
+- [x] Installation command customization
+- [x] Package comparison
 
 ### Phase 3: Advanced Features
 - [ ] Package ratings/reviews (if data available)
@@ -172,12 +170,12 @@ src/
 5. Test on multiple devices and browsers
 
 ## Success Criteria
-- [ ] All packages from webi-installers are displayed
-- [ ] Search finds packages quickly and accurately
-- [ ] Installation commands work correctly
-- [ ] UI is responsive and accessible
-- [ ] Performance scores well on Lighthouse
-- [ ] Code is well-documented and maintainable
+- [x] All packages from webi-installers are displayed
+- [x] Search finds packages quickly and accurately
+- [x] Installation commands work correctly
+- [x] UI is responsive and accessible
+- [x] Performance scores well on Lighthouse
+- [x] Code is well-documented and maintainable
 
 ## Additional Context
 - The original webi website is at https://webinstall.dev
