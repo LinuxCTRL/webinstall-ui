@@ -3,17 +3,17 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { 
-  Package2, 
-  Github, 
-  ExternalLink, 
-  Heart, 
+import {
+  Package2,
+  Github,
+  ExternalLink,
+  Heart,
   Terminal,
   Zap,
   Globe,
   Mail,
   Twitter,
-  Coffee
+  Coffee,
 } from "lucide-react";
 
 export default function Footer() {
@@ -26,25 +26,58 @@ export default function Footer() {
       { label: "Categories", href: "/#categories", icon: Terminal },
     ],
     resources: [
-      { label: "WebInstall.dev", href: "https://webinstall.dev", icon: ExternalLink, external: true },
-      { label: "GitHub Repository", href: "https://github.com/webinstall/webi-installers", icon: Github, external: true },
-      { label: "Documentation", href: "https://webinstall.dev/api", icon: Globe, external: true },
+      {
+        label: "WebInstall.dev",
+        href: "https://webinstall.dev",
+        icon: ExternalLink,
+        external: true,
+      },
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/webinstall/webi-installers",
+        icon: Github,
+        external: true,
+      },
+      {
+        label: "Documentation",
+        href: "https://webinstall.dev/api",
+        icon: Globe,
+        external: true,
+      },
     ],
     community: [
-      { label: "Report Issues", href: "https://github.com/webinstall/webi-installers/issues", icon: Github, external: true },
-      { label: "Feature Requests", href: "https://github.com/webinstall/webi-installers/discussions", icon: Mail, external: true },
-      { label: "Follow Updates", href: "https://twitter.com/webinstalldev", icon: Twitter, external: true },
-    ]
+      {
+        label: "Report Issues",
+        href: "https://github.com/webinstall/webi-installers/issues",
+        icon: Github,
+        external: true,
+      },
+      {
+        label: "Feature Requests",
+        href: "https://github.com/webinstall/webi-installers/discussions",
+        icon: Mail,
+        external: true,
+      },
+      {
+        label: "Follow Updates",
+        href: "https://twitter.com/webinstalldev",
+        icon: Twitter,
+        external: true,
+      },
+    ],
   };
 
   return (
     <footer className="relative mt-16 border-t bg-gradient-to-t from-muted/30 to-background">
       {/* Decorative background pattern */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
-        <div className="h-full w-full" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
-          backgroundSize: '24px 24px'
-        }} />
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+            backgroundSize: "24px 24px",
+          }}
+        />
       </div>
 
       <div className="relative">
@@ -62,15 +95,21 @@ export default function Footer() {
                 </span>
               </div>
               <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                A modern, elegant interface for discovering and installing developer tools. 
-                Making package management simple and beautiful.
+                A modern, elegant interface for discovering and installing
+                developer tools. Making package management simple and beautiful.
               </p>
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-xs bg-green-500/10 text-green-700 border-green-500/20">
+                <Badge
+                  variant="outline"
+                  className="text-xs bg-green-500/10 text-green-700 border-green-500/20"
+                >
                   <div className="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse" />
                   170+ Packages
                 </Badge>
-                <Badge variant="outline" className="text-xs bg-blue-500/10 text-blue-700 border-blue-500/20">
+                <Badge
+                  variant="outline"
+                  className="text-xs bg-blue-500/10 text-blue-700 border-blue-500/20"
+                >
                   Cross-Platform
                 </Badge>
               </div>
@@ -82,7 +121,7 @@ export default function Footer() {
               <ul className="space-y-3">
                 {links.product.map((link) => (
                   <li key={link.href}>
-                    <Link 
+                    <Link
                       href={link.href}
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
                     >
@@ -101,7 +140,7 @@ export default function Footer() {
                 {links.resources.map((link) => (
                   <li key={link.href}>
                     {link.external ? (
-                      <a 
+                      <a
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -111,7 +150,7 @@ export default function Footer() {
                         {link.label}
                       </a>
                     ) : (
-                      <Link 
+                      <Link
                         href={link.href}
                         className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
                       >
@@ -130,7 +169,7 @@ export default function Footer() {
               <ul className="space-y-3">
                 {links.community.map((link) => (
                   <li key={link.href}>
-                    <a 
+                    <a
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -153,13 +192,23 @@ export default function Footer() {
               <span>© {currentYear} WebInstall UI</span>
               <span className="hidden md:inline">•</span>
               <div className="flex items-center gap-1">
-                Built with <Heart className="h-4 w-4 text-red-500 animate-pulse" fill="currentColor" /> for developers
+                Built with{" "}
+                <Heart
+                  className="h-4 w-4 text-red-500 animate-pulse"
+                  fill="currentColor"
+                />{" "}
+                for developers by @LinuxCTRL
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Powered by</span>
-              <Button variant="ghost" size="sm" asChild className="h-8 px-2 hover:bg-primary/10">
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                className="h-8 px-2 hover:bg-primary/10"
+              >
                 <a
                   href="https://webinstall.dev"
                   target="_blank"

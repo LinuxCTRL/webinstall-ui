@@ -6,6 +6,7 @@ import type { Package, SearchFilters } from "@/types";
 import { SearchBar } from "@/components/SearchBar";
 import { PackageGrid } from "@/components/PackageGrid";
 import { PackageComparison } from "@/components/PackageComparison";
+import { FaGithubAlt } from "react-icons/fa";
 
 interface HomeContentProps {
   initialPackages: Package[];
@@ -197,8 +198,19 @@ export function HomeContent({
               Discover and install development tools with a single command. A
               modern interface for the webinstall.dev ecosystem.
             </p>
-            <div className="inline-block px-2 py-1 bg-muted text-lg font-semibold rounded-full text-muted-foreground align-middle ml-2">
-              {packages.length} Packages
+            <div className="flex items-center justify-center gap-4">
+              <div className="px-2 py-1 bg-muted text-lg font-semibold rounded-full text-muted-foreground">
+                {packages.length} Packages
+              </div>
+              <a
+                href="https://github.com/webinstall/webi-installers"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full font-medium transition-colors shadow-lg hover:shadow-xl"
+              >
+                <FaGithubAlt className="h-5 w-5" />
+                Give it a Star
+              </a>
             </div>
           </div>
 

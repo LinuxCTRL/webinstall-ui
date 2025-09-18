@@ -6,7 +6,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
 import { Header } from "@/components/Header";
-import { getAllPackages } from "@/lib/data-service";
 const Operator = localFont({
   src: "./../../public/fonts/OperatorMonoLig-Book.otf",
 });
@@ -91,14 +90,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const packages = await getAllPackages();
-  const packagesLength = packages.length;
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${Operator.className} antialiased`}>
@@ -108,7 +104,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header packageCount={packagesLength} />
+          <Header />
           {children}
           <Footer />
           <Toaster />
