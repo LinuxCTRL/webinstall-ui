@@ -220,7 +220,7 @@ export class WebiDataService {
 export const webiDataService = WebiDataService.getInstance();
 
 // Convenience functions for common operations
-export const getAllPackages = () => webiDataService.getAllPackages();
+export const getAllPackages = (forceRefresh?: boolean) => webiDataService.getAllPackages(forceRefresh);
 export const getPackage = (name: string) => webiDataService.getPackage(name);
 export const searchPackages = (query: string) =>
   webiDataService.searchPackages(query);

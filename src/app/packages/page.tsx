@@ -35,11 +35,19 @@ export const metadata: Metadata = {
 
 export default async function PackagesPage() {
   try {
-    // Fetch data on the server side
+    // Fetch data on the server side with force refresh to get new descriptions
     const [packages, categories] = await Promise.all([
-      getAllPackages(),
+      getAllPackages(true), // Force refresh to bypass cache
       getCategories(),
     ]);
+    
+    // Debug: Log a few packages to see their descriptions
+    console.log("Sample packages with descriptions:", packages.slice(0, 3).map(p => ({
+      name: p.name,
+      tagline: p.tagline,
+      description: p.description
+    })));
+    
     return (
       <HomeClient initialPackages={packages} initialCategories={categories} />
     );
