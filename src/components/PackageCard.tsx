@@ -146,27 +146,29 @@ export function PackageCard({
                   <div className="absolute inset-0 -translate-x-full group-hover/badge:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
                 </Badge>
               </div>
-              <CardDescription className="text-sm text-muted-foreground line-clamp-1">
+              <CardDescription className="text-sm text-foreground/70 line-clamp-1 font-medium leading-relaxed">
                 {pkg.tagline || pkg.description}
               </CardDescription>
-              <div className="flex items-center gap-2 mt-2">
-                {supportedPlatforms.map((platform) => (
-                  <TooltipProvider key={platform}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-1 rounded-full hover:bg-muted hover:text-foreground transition-all duration-200 hover:scale-105 cursor-default border border-transparent hover:border-border">
-                          {getPlatformIcon(platform)}
-                          <span className="capitalize font-medium">
-                            {platform}
-                          </span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Available on {platform}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ))}
+              <div className="flex items-center justify-between mt-2 min-h-[24px]">
+                <div className="flex items-center gap-1 flex-wrap">
+                  {supportedPlatforms.map((platform) => (
+                    <TooltipProvider key={platform}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-1 rounded-full hover:bg-muted hover:text-foreground transition-all duration-200 hover:scale-105 cursor-default border border-transparent hover:border-border">
+                            {getPlatformIcon(platform)}
+                            <span className="capitalize font-medium text-[10px] sm:text-xs">
+                              {platform === "macos" ? "mac" : platform}
+                            </span>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Available on {platform === "macos" ? "macOS" : platform}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ))}
+                </div>
                 <QuickRating rating={packageRating.averageRating} size="sm" />
               </div>
             </div>
@@ -247,7 +249,7 @@ export function PackageCard({
   }
 
   return (
-    <Card className="group relative hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:rotate-1 shadow-lg bg-gradient-to-br from-background to-muted/20 border-2 hover:border-primary/20 hover:bg-gradient-to-br hover:from-background hover:to-primary/5 overflow-hidden">
+    <Card className="group relative hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:rotate-1 shadow-lg bg-gradient-to-br from-background to-muted/20 border-2 hover:border-primary/20 hover:bg-gradient-to-br hover:from-background hover:to-primary/5 overflow-hidden h-full flex flex-col">
       {/* Animated background elements */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none">
         <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/30 to-transparent rounded-full blur-xl" />
@@ -290,32 +292,38 @@ export function PackageCard({
         </div>
       </CardHeader>
 
-      <CardContent className="pt-0 pb-4">
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+      <CardContent className="pt-0 pb-4 flex-1">
+        <p className="text-sm text-foreground/80 line-clamp-2 mb-3 leading-relaxed font-medium">
           {pkg.tagline || pkg.description}
         </p>
 
-        <div className="flex items-center gap-2 mb-3 flex-wrap">
-          {supportedPlatforms.map((platform) => (
-            <TooltipProvider key={platform}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/70 px-3 py-1.5 rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 hover:bg-muted hover:text-foreground border border-transparent hover:border-border cursor-default">
-                    {getPlatformIcon(platform)}
-                    <span className="capitalize font-medium">{platform}</span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Available on {platform}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ))}
-          <QuickRating rating={packageRating.averageRating} size="sm" />
+        <div className="mb-3 space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 flex-wrap">
+              {supportedPlatforms.map((platform) => (
+                <TooltipProvider key={platform}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/70 px-2.5 py-1 rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 hover:bg-muted hover:text-foreground border border-transparent hover:border-border cursor-default">
+                        {getPlatformIcon(platform)}
+                        <span className="capitalize font-medium text-[10px] sm:text-xs">
+                          {platform === "macos" ? "mac" : platform}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Available on {platform === "macos" ? "macOS" : platform}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ))}
+            </div>
+            <QuickRating rating={packageRating.averageRating} size="sm" />
+          </div>
         </div>
       </CardContent>
 
-      <CardFooter className="pt-0 gap-2">
+      <CardFooter className="pt-0 gap-2 mt-auto">
         <Dialog>
           <DialogTrigger asChild>
             <Button
