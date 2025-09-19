@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Package } from "@/types";
+import { getPackageRating } from "@/lib/ratings-service";
+import { QuickRating } from "@/components/PackageRating";
 import {
   Card,
   CardContent,
@@ -59,6 +61,7 @@ export function PackageCard({
   canAddToCompare = true,
 }: PackageCardProps) {
   const [copied, setCopied] = useState<string | null>(null);
+  const packageRating = getPackageRating(pkg);
 
   const handleCopyCommand = async (command: string, type: string) => {
     try {
@@ -164,6 +167,7 @@ export function PackageCard({
                     </Tooltip>
                   </TooltipProvider>
                 ))}
+                <QuickRating rating={packageRating.averageRating} size="sm" />
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -291,7 +295,7 @@ export function PackageCard({
           {pkg.tagline || pkg.description}
         </p>
 
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
           {supportedPlatforms.map((platform) => (
             <TooltipProvider key={platform}>
               <Tooltip>
@@ -307,6 +311,7 @@ export function PackageCard({
               </Tooltip>
             </TooltipProvider>
           ))}
+          <QuickRating rating={packageRating.averageRating} size="sm" />
         </div>
       </CardContent>
 

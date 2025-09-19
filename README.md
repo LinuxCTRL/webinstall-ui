@@ -80,6 +80,11 @@ interface Package {
 - [x] Package comparison
 
 ### Phase 3: Advanced Features
+- [ ] In home page instead of listing all packages we have to show this youtube veideo `https://youtu.be/uu-9Cq5Dssc` with some cards explaining why we did this and how its working
+- [ ] Move the packages to `/packages` route
+- [ ] Read `/faq.md` and create a seperate route for it
+- [ ] Add cookie banner
+- [ ] Create an about page based on `/about.md`
 - [ ] Package ratings/reviews (if data available)
 - [ ] Installation success tracking
 - [ ] Package dependencies visualization

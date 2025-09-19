@@ -20,6 +20,33 @@ export interface Package {
   updatedAt: string;
 }
 
+// Rating and review interfaces
+export interface PackageReview {
+  id: string;
+  packageName: string;
+  rating: number; // 1-5 stars
+  title: string;
+  comment: string;
+  author: string;
+  date: string;
+  helpful: number;
+  verified: boolean; // Whether the reviewer actually installed the package
+}
+
+export interface PackageRating {
+  packageName: string;
+  averageRating: number;
+  totalReviews: number;
+  ratingDistribution: {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
+  };
+  reviews: PackageReview[];
+}
+
 // GitHub API response types
 export interface GitHubTreeItem {
   path: string;
@@ -60,7 +87,7 @@ export interface PackageMetadata {
   linux?: boolean;
   macos?: boolean;
   windows?: boolean;
-  [key: string]: any;
+  [key: string]: string | boolean | undefined;
 }
 
 // Search and filter types

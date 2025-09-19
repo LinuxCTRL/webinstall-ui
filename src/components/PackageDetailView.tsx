@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Package } from "@/types";
+import { getPackageRating } from "@/lib/ratings-service";
+import { PackageRating } from "@/components/PackageRating";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -45,6 +47,7 @@ import {
   Terminal,
   Info,
   Share,
+  Star,
 } from "lucide-react";
 import { copyToClipboard, formatDate } from "@/lib/utils";
 import { toast } from "sonner";
@@ -55,6 +58,7 @@ interface PackageDetailViewProps {
 
 export function PackageDetailView({ package: pkg }: PackageDetailViewProps) {
   const [copied, setCopied] = useState<string | null>(null);
+  const packageRating = getPackageRating(pkg);
 
   // Generate structured data for SEO
   const structuredData = {
@@ -225,7 +229,10 @@ export function PackageDetailView({ package: pkg }: PackageDetailViewProps) {
         <main className="container mx-auto px-4 py-8 max-w-6xl">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-            <Link href="/" className="hover:text-foreground transition-colors">
+            <Link
+              href="/packages"
+              className="hover:text-foreground transition-colors"
+            >
               Packages
             </Link>
             <span>/</span>
@@ -238,7 +245,7 @@ export function PackageDetailView({ package: pkg }: PackageDetailViewProps) {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <Button variant="ghost" size="sm" asChild className="mb-1">
-                    <Link href="/">
+                    <Link href="/packages">
                       <ArrowLeft className="h-4 w-4" />
                       Back
                     </Link>
@@ -275,6 +282,13 @@ export function PackageDetailView({ package: pkg }: PackageDetailViewProps) {
                       </Tooltip>
                     </TooltipProvider>
                   ))}
+
+                  <PackageRating
+                    rating={packageRating.averageRating}
+                    totalReviews={0}
+                    showReviewCount={false}
+                    size="md"
+                  />
                 </div>
 
                 {(pkg.tagline || pkg.description) && (

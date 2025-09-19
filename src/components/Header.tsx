@@ -72,6 +72,39 @@ export function Header({ packageCount }: HeaderProps) {
             asChild
             className="hover:bg-primary/10"
           >
+            <Link href="/packages">
+              Packages
+            </Link>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className="hover:bg-primary/10"
+          >
+            <Link href="/faq">
+              FAQ
+            </Link>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className="hover:bg-primary/10"
+          >
+            <Link href="/about">
+              About
+            </Link>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className="hover:bg-primary/10"
+          >
             <a
               href="https://webinstall.dev"
               target="_blank"
@@ -147,6 +180,40 @@ export function Header({ packageCount }: HeaderProps) {
                 )}
 
                 <nav className="flex flex-col gap-2">
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className="justify-start h-12"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Link href="/packages" className="flex items-center gap-3">
+                      <Package2 className="h-4 w-4" />
+                      Browse Packages
+                    </Link>
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className="justify-start h-12"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Link href="/faq" className="flex items-center gap-3">
+                      FAQ
+                    </Link>
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className="justify-start h-12"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Link href="/about" className="flex items-center gap-3">
+                      About
+                    </Link>
+                  </Button>
+
                   <Button
                     variant="ghost"
                     asChild

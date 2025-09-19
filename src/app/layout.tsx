@@ -8,6 +8,7 @@ import Footer from "@/components/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Header } from "@/components/Header";
+import { CookieBanner } from "@/components/CookieBanner";
 const Operator = localFont({
   src: "./../../public/fonts/OperatorMonoLig-Book.otf",
 });
@@ -110,6 +111,7 @@ export default function RootLayout({
           {children}
           <SpeedInsights />
           <Footer />
+          <CookieBanner />
           <Toaster />
           <Analytics />
         </ThemeProvider>
